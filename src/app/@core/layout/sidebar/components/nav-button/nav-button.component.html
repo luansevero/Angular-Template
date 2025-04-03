@@ -1,0 +1,17 @@
+<a
+  href="{{ href }}"
+  class="group w-full flex flex-col items-center"
+  [class.text-muted-foreground]="!isActive()"
+>
+  <div
+    class="flex p-2 rounded-lg"
+    [class.bg-primary]="isActive()"
+    [class.text-primary-foreground]="isActive()"
+    [class.group-hover:bg-muted]="!isActive()"
+  >
+    <ng-icon ui name="{{ icon }}" size="md" />
+  </div>
+  <p typography class="mt-0! text-sm">
+    {{ label }}
+  </p>
+</a>

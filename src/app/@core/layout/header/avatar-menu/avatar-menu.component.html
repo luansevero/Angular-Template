@@ -1,0 +1,51 @@
+<div class="flex w-full items-center justify-center">
+  <button
+    uiBtn
+    variant="ghost"
+    size="icon"
+    [align]="'end'"
+    [brnMenuTriggerFor]="menu"
+    class="rounded-full p-0.5"
+  >
+    <ui-avatar variant="small">
+      <img
+        uiAvatarImage
+        src="/assets/avatar.png"
+        alt="spartan logo. Resembling a spartanic shield"
+      />
+      <span uiAvatarFallback class="bg-[#FD005B] text-white">RG</span>
+    </ui-avatar>
+  </button>
+</div>
+<ng-template #menu>
+  <ui-menu class="max-w-64">
+    <ui-menu-label class="flex items-center gap-2">
+      <ui-avatar variant="medium" [class]="true" class="rounded-md">
+        <img
+          uiAvatarImage
+          src="/assets/avatar.png"
+          alt="spartan logo. Resembling a spartanic shield"
+        />
+        <span uiAvatarFallback class="bg-[#FD005B] text-white">RG</span>
+      </ui-avatar>
+      <div class="flex flex-col overflow-hidden w-full">
+        <p typography class="text-sm">Luan Severo</p>
+        <p typography variant="muted" class="truncate text-xs">luan.gomesforestoken.com.br</p>
+      </div>
+    </ui-menu-label>
+    <ui-menu-separator />
+    <ui-menu-group>
+      <button uiMenuItem>
+        <ng-icon ui name="lucideUser" uiMenuIcon />
+        <span>Perfil</span>
+      </button>
+    </ui-menu-group>
+
+    <ui-menu-separator />
+
+    <button uiMenuItem>
+      <ng-icon uiMenuIcon name="lucideLogOut" />
+      <span>Desconectar</span>
+    </button>
+  </ui-menu>
+</ng-template>

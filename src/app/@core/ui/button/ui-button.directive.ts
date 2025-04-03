@@ -1,4 +1,4 @@
-import { Directive, computed, input, signal } from '@angular/core';
+import { Directive, computed, input, signal, ElementRef } from '@angular/core';
 import { type VariantProps, cva } from 'class-variance-authority';
 import type { ClassValue } from 'clsx';
 import { injectBrnButtonConfig } from './ui-button.token';
@@ -32,29 +32,42 @@ export const buttonVariants = cva(
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 @Directive({
-	selector: '[uiBtn]',
+	selector: 'button[uiBtn], a[uiBtn]',
 	standalone: true,
 	exportAs: 'uiBtn',
 	host: {
 		'[class]': '_computedClass()',
+		'(click)': '_handleDisabledClick($event)',
 	},
 })
 export class UIButtonDirective {
 	private readonly _config = injectBrnButtonConfig();
-
 	private readonly _additionalClasses = signal<ClassValue>('');
 
 	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	public readonly variant = input<ButtonVariants['variant']>(this._config.variant);
+	public readonly size = input<ButtonVariants['size']>(this._config.size);
 
 	protected readonly _computedClass = computed(() =>
 		cn(buttonVariants({ variant: this.variant(), size: this.size() }), this.userClass(), this._additionalClasses()),
 	);
 
-	public readonly variant = input<ButtonVariants['variant']>(this._config.variant);
-
-	public readonly size = input<ButtonVariants['size']>(this._config.size);
+	constructor(private elementRef: ElementRef) {
+		const nativeElement = this.elementRef.nativeElement;
+		if (!(nativeElement instanceof HTMLButtonElement || nativeElement instanceof HTMLAnchorElement)) {
+			throw new Error('uiBtn só pode ser usado em <button> ou <a>.');
+		}
+	}
 
 	setClass(classes: string): void {
 		this._additionalClasses.set(classes);
+	}
+
+	private _handleDisabledClick(event: Event): void {
+		const element = this.elementRef.nativeElement as HTMLButtonElement | HTMLAnchorElement;
+		if (element.hasAttribute('disabled')) {
+			event.preventDefault();
+			event.stopImmediatePropagation();
+		}
 	}
 }
